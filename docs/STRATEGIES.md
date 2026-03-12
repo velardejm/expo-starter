@@ -152,6 +152,8 @@ src/
     network.ts                → Network detection
   config/
     featureFlags.ts           → Build-time feature toggles
+    theme.ts                  → Central design tokens (colors, spacing, typography, radius, shadows)
+    constants.ts              → App-wide constants
 sql/                          → Database migrations (numbered, append-only)
 docs/                         → All project documentation
 checklists/                   → Per-phase/feature checklists
@@ -472,16 +474,30 @@ When there are two ways to implement something, choose the simpler one.
 
 ## S18 — Skills for Consistency
 
-Use Claude skills to standardize repeated code patterns across phases.
+Skills are instruction files that Claude and all specialist agents must read before performing specific types of work. They enforce consistent patterns across every phase.
 
-**When to create a skill:**
-- A code pattern appears in 2+ phases (e.g., checklist format, repository boilerplate)
-- A document format needs to be consistent (e.g., DIARY entries, SQL headers)
-- A workflow step is complex enough to forget (e.g., RLS setup sequence)
+**Required skills (always read before the relevant work):**
 
-**Skill types:**
-- `/checklists/` — checklist templates per phase type
-- `/sql/` — SQL file header templates
-- `/domain/` — repository + mapper boilerplate per entity type
+| Skill | File | Read when |
+|-------|------|-----------|
+| rn-styles | `skills/rn-styles/SKILL.md` | Any styles, colors, spacing, theming |
+| rn-types | `skills/rn-types/SKILL.md` | Any TypeScript types or interfaces |
+| rn-navigation | `skills/rn-navigation/SKILL.md` | Any navigation, tabs, routing |
+| rn-component | `skills/rn-component/SKILL.md` | Any UI component creation |
+| rn-repository | `skills/rn-repository/SKILL.md` | Any repository, mapper, domain entity |
+| supabase-migration | `skills/supabase-migration/SKILL.md` | Any SQL migration file |
+| checklist | `skills/checklist/SKILL.md` | Creating any checklist |
 
-**Why this works:** Reduces Claude's variability. Same pattern every time, less debugging.
+**Core enforcements:**
+- All styles flow from `src/config/theme.ts` — no hardcoded values anywhere
+- All types defined once and imported — never redefined
+- Tabs-first navigation via Expo Router `(tabs)/` group
+- Shared components in `src/shared/components/` with barrel export
+- Repository pattern strictly enforced — features never call `supabase.from()` directly
+
+**When to create a new skill:**
+- A code pattern appears in 2+ phases
+- A document format must be consistent across the project
+- A workflow step is complex enough to be done inconsistently
+
+**Why this works:** Reduces Claude's variability. Same pattern every time, fewer debugging sessions.

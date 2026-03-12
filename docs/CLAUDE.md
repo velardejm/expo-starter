@@ -85,6 +85,25 @@ Specialists do not cross domains.
 
 ---
 
+## Skills Rule
+
+**Before implementing any of the following, read the corresponding skill first.**
+This applies to Claude and to every specialist agent spawned.
+
+| Work type | Skill to read first |
+|-----------|-------------------|
+| Any styles, colors, spacing, theming | `skills/rn-styles/SKILL.md` |
+| Any TypeScript types or interfaces | `skills/rn-types/SKILL.md` |
+| Any navigation, tabs, routing | `skills/rn-navigation/SKILL.md` |
+| Any UI component creation | `skills/rn-component/SKILL.md` |
+| Any repository, mapper, domain entity | `skills/rn-repository/SKILL.md` |
+| Any SQL migration file | `skills/supabase-migration/SKILL.md` |
+| Creating a phase or feature checklist | `skills/checklist/SKILL.md` |
+
+When spawning a specialist, include the relevant skill file path(s) in their prompt under "Files to read".
+
+---
+
 ## Checklist-First Rule
 
 Before writing any code for a feature:
